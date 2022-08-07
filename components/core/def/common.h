@@ -29,4 +29,12 @@
 #define KAIROS_LOGD( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_DEBUG,   tag, format, ##__VA_ARGS__)
 #define KAIROS_LOGV( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_VERBOSE, tag, format, ##__VA_ARGS__)
 
+#define NOP() asm volatile ("nop")
+
+unsigned long IRAM_ATTR micros();
+
+void IRAM_ATTR delay_us(uint32_t us);
+
+void IRAM_ATTR delay_ms(uint32_t delay);
+
 typedef uint8_t kairos_err_t;
