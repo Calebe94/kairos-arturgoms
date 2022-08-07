@@ -1,8 +1,9 @@
 #ifndef GDEH0154D67_H
 #define GDEH0154D67_H
 
-#include "driver/gpio.h"
-#include "def/board.h"
+#include <driver/gpio.h>
+#include <rom/gpio.h>
+#include "def/common.h"
 
 /**************
  * MACROS
@@ -65,6 +66,6 @@ void EPD_WhiteScreen_ALL(const unsigned char * datas);
 void EPD_SetRAMValue_BaseMap(const unsigned char * datas);
 void EPD_Dis_Part(unsigned int x_start,unsigned int y_start,const unsigned char * datas,unsigned int PART_COLUMN,unsigned int PART_LINE);
 
-void display_init();
+kairos_err_t init_gdeh0154d67(void);
 
 #endif

@@ -11,6 +11,7 @@
 // Tests 
 #include "test/i2c_scanner.h"
 #include "test/i2c_rtc.h"
+#include "test/test_display.h"
 
 // Watch Core Includes
 #include "lib/system/system.h"

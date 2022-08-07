@@ -4,9 +4,11 @@
 // Common
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
+#include <freertos/task.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <driver/i2c.h>
+#include "esp_timer.h"
 #include "esp_pm.h"
 #include "esp_log.h"
 

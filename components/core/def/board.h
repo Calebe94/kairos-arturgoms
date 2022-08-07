@@ -12,7 +12,7 @@
 // Buttons
 #define PIN_BTN1 26
 #define PIN_BTN2 25
-#define PIN_BTN3 32
+#define PIN_BTN3 34
 #define PIN_BTN4 4
 
 //Display

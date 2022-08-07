@@ -1,17 +1,10 @@
-#include "driver/gpio.h"
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
-#include <esp_log.h>
 #include "gdeh0154d67.h"
-#include "hal/gpio_types.h"
-#include "def/common.h"
 
-void driver_delay_us(unsigned int xus)  //1us
-{
+void driver_delay_us(unsigned int xus){
   for(;xus>1;xus--);
 }
-void driver_delay_xms(unsigned long xms) //1ms
-{
+
+void driver_delay_xms(unsigned long xms) {
     unsigned long i = 0 , j=0;
 
     for(j=0;j<xms;j++)
@@ -19,8 +12,8 @@ void driver_delay_xms(unsigned long xms) //1ms
         for(i=0; i<256; i++);
     }
 }
-void DELAY_S(unsigned int delaytime)
-{
+
+void DELAY_S(unsigned int delaytime){
   int i,j,k;
   for(i=0;i<delaytime;i++)
   {
@@ -32,8 +25,7 @@ void DELAY_S(unsigned int delaytime)
   }
 }
 //////////////////////SPI///////////////////////////////////
-void SPI_Delay(unsigned char xrate)
-{
+void SPI_Delay(unsigned char xrate){
   unsigned char i;
   while(xrate)
   {
@@ -43,36 +35,35 @@ void SPI_Delay(unsigned char xrate)
 }
 
 
-void SPI_Write(unsigned char value)
-{
+void SPI_Write(unsigned char value){
     unsigned char i;
    SPI_Delay(1);
     for(i=0; i<8; i++)
     {
         EPD_W21_CLK_0;
-       SPI_Delay(1);
-       if(value & 0x80)
+        SPI_Delay(1);
+        if(value & 0x80){
           EPD_W21_MOSI_1;
-        else
-          EPD_W21_MOSI_0;
+        }
+        else{
+            EPD_W21_MOSI_0;
+        }
         value = (value << 1);
-       SPI_Delay(1);
-       driver_delay_us(1);
+        SPI_Delay(1);
+        driver_delay_us(1);
         EPD_W21_CLK_1;
         SPI_Delay(1);
     }
 }
 
-void Epaper_Write_Command(unsigned char command)
-{
+void Epaper_Write_Command(unsigned char command){
   SPI_Delay(1);
   EPD_W21_CS_0;
   EPD_W21_DC_0;   // command write
   SPI_Write(command);
   EPD_W21_CS_1;
 }
-void Epaper_Write_Data(unsigned char datas)
-{
+void Epaper_Write_Data(unsigned char datas){
   SPI_Delay(1);
   EPD_W21_CS_0;
   EPD_W21_DC_1;   // command write
@@ -82,8 +73,7 @@ void Epaper_Write_Data(unsigned char datas)
 
 /////////////////EPD settings Functions/////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void EPD_HW_Init(void)
-{
+void EPD_HW_Init(void){
   EPD_W21_RST_0;  // Module reset
   delay_ms(1); //At least 10ms delay
   EPD_W21_RST_1;
@@ -126,8 +116,7 @@ void EPD_HW_Init(void)
 
 }
 //////////////////////////////All screen update////////////////////////////////////////////
-void EPD_WhiteScreen_ALL(const unsigned char * datas)
-{
+void EPD_WhiteScreen_ALL(const unsigned char * datas){
    unsigned int i;
     Epaper_Write_Command(0x24);   //write RAM for black(0)/white (1)
    for(i=0;i<ALLSCREEN_GRAGHBYTES;i++)
@@ -138,37 +127,36 @@ void EPD_WhiteScreen_ALL(const unsigned char * datas)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-void EPD_Update(void)
-{
+void EPD_Update(void){
   Epaper_Write_Command(0x22); //Display Update Control
   Epaper_Write_Data(0xF7);
   Epaper_Write_Command(0x20); //Activate Display Update Sequence
   Epaper_READBUSY();
 
 }
-void EPD_Part_Update(void)
-{
+
+void EPD_Part_Update(void){
   Epaper_Write_Command(0x22);//Display Update Control
   Epaper_Write_Data(0xFF);
   Epaper_Write_Command(0x20); //Activate Display Update Sequence
   Epaper_READBUSY();
 }
-void EPD_DeepSleep(void)
-{
+
+void EPD_DeepSleep(void){
   Epaper_Write_Command(0x10); //enter deep sleep
   Epaper_Write_Data(0x01);
   delay_ms(100);
 }
-void Epaper_READBUSY(void)
-{
+
+void Epaper_READBUSY(void){
   while(1)
   {   //=1 BUSY
      if(isEPD_W21_BUSY==0) break;
   }
 }
+
 ///////////////////////////Part update//////////////////////////////////////////////
-void EPD_SetRAMValue_BaseMap( const unsigned char * datas)
-{
+void EPD_SetRAMValue_BaseMap( const unsigned char * datas){
   unsigned int i;
   const unsigned char  *datas_flag;
   datas_flag=datas;
@@ -187,8 +175,7 @@ void EPD_SetRAMValue_BaseMap( const unsigned char * datas)
 }
 
 
-void EPD_Dis_Part(unsigned int x_start,unsigned int y_start,const unsigned char * datas,unsigned int PART_COLUMN,unsigned int PART_LINE)
-{
+void EPD_Dis_Part(unsigned int x_start,unsigned int y_start,const unsigned char * datas,unsigned int PART_COLUMN,unsigned int PART_LINE){
   unsigned int i;
   unsigned int x_end,y_start1,y_start2,y_end1,y_end2;
   x_start=x_start/8;//
@@ -240,9 +227,7 @@ void EPD_Dis_Part(unsigned int x_start,unsigned int y_start,const unsigned char 
 
 /////////////////////////////////Single display////////////////////////////////////////////////
 
-void EPD_WhiteScreen_Black(void)
-
-{
+void EPD_WhiteScreen_Black(void){
    unsigned int i,k;
     Epaper_Write_Command(0x24);   //write RAM for black(0)/white (1)
   for(k=0;k<250;k++)
@@ -255,9 +240,7 @@ void EPD_WhiteScreen_Black(void)
     EPD_Update();
 }
 
-void EPD_WhiteScreen_White(void)
-
-{
+void EPD_WhiteScreen_White(void){
    unsigned int i,k;
     Epaper_Write_Command(0x24);   //write RAM for black(0)/white (1)
   for(k=0;k<250;k++)
@@ -270,8 +253,7 @@ void EPD_WhiteScreen_White(void)
   EPD_Update();
 }
 
-void display_init()
-{
+kairos_err_t init_gdeh0154d67(void){
     gpio_pad_select_gpio(PIN_BUSY);
     gpio_set_direction(PIN_BUSY, GPIO_MODE_INPUT);
 
@@ -289,4 +271,6 @@ void display_init()
 
     gpio_pad_select_gpio(PIN_MOSI);
     gpio_set_direction(PIN_MOSI, GPIO_MODE_OUTPUT);
+
+    return KAIROS_ERR_OK;
 }

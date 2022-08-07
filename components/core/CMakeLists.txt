@@ -4,24 +4,28 @@ idf_component_register(
                         "test/"
                         "drv/protocols"
                         "drv/rtc"
-                        "drv/display/"
+                        "drv/display"
                         "hal/rtc"
+                        "hal/display"
                         "hal/modules"
                         "lib/system"
                         SRCS
+                        "def/common.c"
                         "test/i2c_scanner.c"
                         "test/i2c_rtc.c"
+                        "test/test_display.c"
                         "drv/protocols/i2c.c"
                         "drv/rtc/pcf8563.c"
                         "drv/display/gdeh0154d67.c"
-                        "def/common.c"
                         "hal/rtc/rtc.c"
+                        "hal/display/display.c"
                         "hal/modules/modules.c"
                         "lib/system/system.c"
                         REQUIRES
                         "driver"
                         "nvs_flash"
                         "esp_netif"
+                        "esp_timer"
 )
-
+target_compile_options(${COMPONENT_LIB} PRIVATE -Wno-error=switch)
 set(EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common)
