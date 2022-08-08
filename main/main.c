@@ -6,7 +6,7 @@ void app_main(void)
 {
     KAIROS_LOGI(TAG, "System is starting.");
     system_init();
-    xTaskCreatePinnedToCore(task_test_display, TAG, configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL, APP_CPU_NUM);
-
+    /* xTaskCreatePinnedToCore(task_test_display, TAG, configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL, APP_CPU_NUM); */
+    xTaskCreate(task_test_display, TAG, configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL);
     while(1);
 }

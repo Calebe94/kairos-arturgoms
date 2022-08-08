@@ -26,6 +26,7 @@ idf_component_register(
                         "nvs_flash"
                         "esp_netif"
                         "esp_timer"
+                        "lvgl"
 )
 target_compile_options(${COMPONENT_LIB} PRIVATE -Wno-error=switch)
 set(EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common)
